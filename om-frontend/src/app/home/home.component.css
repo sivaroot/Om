@@ -1,0 +1,76 @@
+.name > p {
+  margin-bottom:25px;
+  text-align: center;
+  font-size: 75px;
+  color: #ffffff;
+}
+
+.function{
+  margin: auto;
+  width: 340px;
+
+}
+.btnMain {
+
+  width: 130px;
+  height: 40px;
+  margin: auto 10px;
+  color: #aa5725;
+  font-family: 'Baloo Bhai', cursive;
+  font-size: 20px;
+  border-radius: 15px;
+
+}
+.center-container{
+
+  position:fixed;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100%;
+  height: 30%;
+  scroll-snap-align: center;
+  padding: 10px;
+
+}
+
+.dropdownMenu{
+  border: 0;
+  margin-top: 15px;
+  border-radius: 15px;
+  padding: 15px;
+  background-color: #FFF;
+}
+.dropform{
+  width: 300px;
+
+}
+.dropdownMenu button {
+  width: 300px;
+  color: #aa5725;
+
+}
+@media only screen and (max-width: 991px) {
+  .name > p {
+    font-size: 45px;
+  }
+
+
+  .function{
+    margin: auto;
+    width: 320px;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .name > p {
+    font-size: 40px;
+  }
+
+
+  .function{
+    margin: auto;
+    width: 320px;
+  }
+}

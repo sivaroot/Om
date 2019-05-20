@@ -1,0 +1,39 @@
+<div class="center-container">
+  <div class="name">
+    <p class="main-font">Open messenger</p>
+  </div>
+  <div class="function">
+    <div ngbDropdown style="display: inline-block">
+      <button class="btnMain" mat-raised-button id="dropdownJoin" ngbDropdownToggle>Join</button>
+      <div ngbDropdownMenu class="dropdownMenu" aria-labelledby="dropdownJoin">
+        <form class="dropform">
+          <div class="form-group">
+            <label for="roomID">Name</label>
+            <input type="email" class="form-control" id="nameJoin" placeholder="What is your name ?">
+            <label for="roomID">Room ID</label>
+            <input type="email" class="form-control" id="roomID" placeholder="What is your room ID ?">
+          </div>
+        </form>
+        <button mat-raised-button>Join</button>
+      </div>
+    </div>
+
+    <div ngbDropdown style="display: inline-block">
+      <button mat-raised-button class="btnMain" id="dropdownCreate"  ngbDropdownToggle>Create</button>
+      <div ngbDropdownMenu class="dropdownMenu" aria-labelledby="dropdownCreate">
+        <form class="dropform">
+          <div class="form-group">
+            <label for="roomID">Name</label>
+            <input type="text" class="form-control" id="nameCreate" placeholder="Your room ID">
+            <label for="roomID">Room ID</label>
+            <input type="text" class="form-control" id="roomIDCreate" placeholder="Create your room ID">
+          </div>
+        </form>
+        <button mat-raised-button (click)="connect()" >Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-inline-block"></div>
+
+

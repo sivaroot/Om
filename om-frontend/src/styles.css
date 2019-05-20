@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+body {
+  background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+  background: -moz-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+  background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+  min-width: 300px;
+  min-height: 450px;
+}
+footer{
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+.main-font{
+  font-family: 'Knewave', cursive;
+  text-shadow: 4px 4px 4px #aaa;
+}
