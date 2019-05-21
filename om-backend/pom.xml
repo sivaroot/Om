@@ -66,11 +66,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-	<!--	<dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>google-cloud-language</artifactId>
-			<version>1.26.0</version>
-		</dependency>-->
+
+		<!--	<dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>google-cloud-language</artifactId>
+                <version>1.26.0</version>
+            </dependency>-->
         <!-- Include Servlet API dependency  -->
       <!--  <dependency>
             <groupId>javax.servlet</groupId>
@@ -96,17 +97,17 @@
 
 	</dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>2.0.1.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+<!--	<dependencyManagement>-->
+<!--		<dependencies>-->
+<!--			<dependency>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-dependencies</artifactId>-->
+<!--				<version>2.0.1.RELEASE</version>-->
+<!--				<type>pom</type>-->
+<!--				<scope>import</scope>-->
+<!--			</dependency>-->
+<!--		</dependencies>-->
+<!--	</dependencyManagement>-->
 
 	<build>
 		<plugins>
@@ -114,15 +115,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-          <!--  <plugin>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-maven-plugin</artifactId>
-				<configuration>
-					<project>openmessenger</project>
-					<deploy.promote>true</deploy.promote>
-					<deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
-				</configuration>
-			</plugin>-->
+
 		</plugins>
 	</build>
 
