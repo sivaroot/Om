@@ -1,0 +1,12 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+
+- url: /dist/
+  static_files: om/index.html
+  upload: om/index.html
+
+- url: /dist/
+  static_dir: om
