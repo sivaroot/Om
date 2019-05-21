@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   private sub: any;
   private currentSubscription = null;
   private stompClient;
-  private serverUrl = '/ws';
+  private serverUrl = 'http://35.222.198.64:8080/ws';
   isLoaded = false;
   messageInput: string;
 
