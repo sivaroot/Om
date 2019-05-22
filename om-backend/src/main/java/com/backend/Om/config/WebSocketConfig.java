@@ -21,5 +21,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     registry.enableSimpleBroker("/channel");
   }
 
+ 
+
 
 }
