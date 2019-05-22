@@ -23,10 +23,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   private sub: any;
   private currentSubscription = null;
   private stompClient;
-  private serverUrl = 'http://35.240.216.231:8080/ws';
+  private serverUrl = 'http://35.239.193.180:8080/ws';
   isLoaded = false;
   messageInput: string;
 
+  @ViewChild('inboxChat') inboxChat: ElementRef;
   @ViewChild('msgArea') msgArea: ElementRef;
 
   constructor(private route: ActivatedRoute,
@@ -73,6 +74,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       {},
       JSON.stringify({sender: this.userid, type: 'JOIN'})
     );
+
   }
 
   onError(error) {
@@ -97,11 +99,15 @@ export class ChatComponent implements OnInit, OnDestroy {
 
         if (message.sender === this.userid) {
           this.renderer.addClass(callElement, 'outgoing_msg');
+
           const sentElement = this.renderer.createElement('div');
           this.renderer.addClass(sentElement, 'sent_msg');
+
           const contentElement = this.renderer.createElement('p');
+
           contentElement.innerHTML = message.content;
           const spanElement = this.renderer.createElement('span');
+          this.renderer.addClass(spanElement, 'sent_msg_span');
           spanElement.innerHTML = 'Send by me';
 
           this.renderer.addClass(spanElement, 'callDetailOut');
@@ -124,10 +130,15 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
 
       } else if (message.type === 'JOIN') {
+        this.inboxPeople(payload);
+
+
         this.renderer.addClass(callElement, 'join_msg');
         const contentElement = this.renderer.createElement('p');
         contentElement.innerHTML = message.sender + ' joined!';
         this.renderer.appendChild(callElement, contentElement);
+
+
       } else if (message.type === 'LEAVE') {
         this.renderer.addClass(callElement, 'join_msg');
         const contentElement = this.renderer.createElement('p');
@@ -137,7 +148,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.renderer.appendChild(this.msgArea.nativeElement, callElement);
 
       this.msgArea.nativeElement.scrollTop = this.msgArea.nativeElement.scrollHeight;
-
     }
   }
 
@@ -155,6 +165,33 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
     this.messageInput = '';
 
+  }
+
+  inboxPeople(payload) {
+    const message = JSON.parse(payload.body);
+
+    const chatList = this.renderer.createElement('div');
+    this.renderer.addClass(chatList, 'chat_list');
+
+    const chatPeople = this.renderer.createElement('div');
+    this.renderer.addClass(chatPeople, 'chat_people');
+
+    const chatImg = this.renderer.createElement('div');
+    this.renderer.addClass(chatImg, 'chat_img');
+
+    const img = this.renderer.createElement('img');
+    this.renderer.setProperty(img, 'src', 'https://ptetutorials.com/images/user-profile.png');
+    this.renderer.setProperty(img, 'alt', 'sunil');
+
+    const chatIb = this.renderer.createElement('div');
+    this.renderer.addClass(chatIb, 'chat_ib');
+    chatIb.innerHTML = message.sender;
+
+    this.renderer.appendChild(chatImg, img);
+    this.renderer.appendChild(chatPeople, chatImg);
+    this.renderer.appendChild(chatPeople, chatIb);
+    this.renderer.appendChild(chatList, chatPeople);
+    this.renderer.appendChild(this.inboxChat.nativeElement, chatList);
   }
 
 

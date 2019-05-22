@@ -92,6 +92,7 @@ img{ max-width:100%;}
 .outgoing_msg{
   overflow:hidden;
   margin:5px 0 5px;
+  position: relative;
 
 }
 .incoming_msg {
@@ -99,16 +100,24 @@ img{ max-width:100%;}
   margin:5px 0 5px;
 }
 .received_msg {
-  float: left;
 }
 
 .received_msg p {
   background-color: rgba(0,0,0,0.3) !important;
   border-radius: 20px;
   font-size: 14px;
+  margin: 0 auto;
   color:#fff;
-  padding: 7px;
-  margin: 0 10px 0 10px;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  float: left;
+
+}
+.received_msg > span{
+  clear: both;
+  display: block;
+  bottom: 0px;
+  margin: 4px 0 0;
 
 }
 
@@ -134,22 +143,33 @@ img{ max-width:100%;}
   margin: 10px auto;
 }
 .sent_msg {
-  float: right;
+  position: relative;
   height: 60px;
-
+  right: 0;
 }
 
 
-.sent_msg p {
+.sent_msg > p {
+
   background-color: rgba(0,0,0,0.3) !important;
   border-radius: 20px;
   font-size: 14px;
+  margin: 0 auto;
   color:#fff;
-  padding: 7px;
-  margin: 0 10px 0 10px;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  float: right;
 
 
 }
+
+.sent_msg_span{
+  clear: both;
+  display: block;
+  bottom: 0px;
+  margin: 4px 0 0;
+}
+
 .type_msg {
   padding: 20px;
   position: relative;
