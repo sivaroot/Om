@@ -1,11 +1,14 @@
 package com.backend.Om.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -13,17 +16,17 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
-    @NotBlank
-    private String username;
 
     @NotBlank
     private String nickname;
 
-    @ManyToOne
-    @JoinColumn(name = "lobby_id")
-    private Lobby lobbies;
+    public User() {
+    }
 
-    private boolean status;
+    public User(String nickname) {
+        this.nickname = nickname;
+    }
+
 
     public Long getUserId() {
         return userId;
@@ -31,14 +34,6 @@ public class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getNickname() {
@@ -49,19 +44,5 @@ public class User {
         this.nickname = nickname;
     }
 
-    public Lobby getLobbies() {
-        return lobbies;
-    }
 
-    public void setLobbies(Lobby lobbies) {
-        this.lobbies = lobbies;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 }

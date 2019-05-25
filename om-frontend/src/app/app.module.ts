@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import {RouterModule, Routes} from '@angular/router';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -43,7 +44,7 @@ const routes: Routes = [
     MatButtonModule,
     MatGridListModule,
     MatFormFieldModule,
-
+    HttpClientModule,
     RouterModule.forRoot(routes)
   ],
   providers: [CookieService],

@@ -12,6 +12,7 @@
   text-align: center;
   font-size: 40px;
   color: #ffffff;
+  margin-top: 50px;
   margin-bottom: 50px;
 
 }
@@ -23,6 +24,7 @@
 .main_border{
   border-radius: 30px;
   border: medium none;
+
 }
 .min_border{
   border-radius: 15px;
@@ -38,6 +40,7 @@
   border: 3px solid #ad0100;
 
 }
+
 
 .heading_srch h5{
   color: #fff;
@@ -57,9 +60,14 @@
   margin: 0;
   height: 50px;
   padding: 10px 16px 10px;
+  
 }
 .active_chat{
   background-color: rgba(0,0,0,0.3) !important;
+
+}
+.active_chat img {
+  border: 2px solid #39E017;
 }
 .chat_people{
   overflow:hidden;
@@ -79,7 +87,11 @@
   font-size:14px;
   color:#fff;
 }
-img{ max-width:100%;}
+img{ 
+  max-width:100%;
+  border-radius: 50%;
+
+}
 
 /*---------------------------------------------------*/
 
@@ -245,4 +257,25 @@ img{ max-width:100%;}
   }
 
 
+}
+::-webkit-scrollbar {
+  width: 7px;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  margin-top: 30px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.3);
+  border-radius: 7px;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0,0,0,0.3);
 }

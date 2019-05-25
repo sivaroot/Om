@@ -1,11 +1,12 @@
-import {Component, OnDestroy, OnInit, Renderer2, ViewChild, ElementRef} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 
-import {CookieService} from 'ngx-cookie-service';
+import { CookieService } from 'ngx-cookie-service';
+import { ChatService } from './chat.service';
 
 
 const C_PATH_UNAME = 'om-uname';
@@ -23,16 +24,20 @@ export class ChatComponent implements OnInit, OnDestroy {
   private sub: any;
   private currentSubscription = null;
   private stompClient;
-  private serverUrl = 'https://35.239.193.180:8443/ws';
+  private serverUrl = 'http://localhost:8080/ws';
   isLoaded = false;
   messageInput: string;
+
+  history: any;
+  users: any;
 
   @ViewChild('inboxChat') inboxChat: ElementRef;
   @ViewChild('msgArea') msgArea: ElementRef;
 
   constructor(private route: ActivatedRoute,
-              private cookie: CookieService,
-              private renderer: Renderer2) {
+    private cookie: CookieService,
+    private renderer: Renderer2,
+    private service: ChatService) {
   }
 
   ngOnInit() {
@@ -44,16 +49,20 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.cookie.set(C_PATH_UNAME, this.userid);
     this.cookie.set(C_PATH_ROOM, this.roomid);
     this.initializeWebSocketConnection();
+    this.loadUsers(this.roomid);
+  
   }
 
   initializeWebSocketConnection() {
 
     const ws = new SockJS(this.serverUrl);
     this.stompClient = Stomp.over(ws);
+    this.stompClient.debug = null
+
     const that = this;
     // tslint:disable-next-line:only-arrow-functions
-    this.stompClient.connect({}, function(frame) {
-      console.log('frame', frame);
+    this.stompClient.connect({}, function (frame) {
+      // console.log('frame', frame);
       that.isLoaded = true;
       that.onConnected();
     });
@@ -65,35 +74,44 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.currentSubscription) {
       this.currentSubscription.unsubscribe();
     }
+    this.loadHistory(this.roomid);
     this.stompClient.subscribe(`/channel/${this.roomid}`, (payload) => {
-      console.log('payload', payload);
+      // console.log('payload', payload);
       this.handleResult(payload);
     });
 
     this.stompClient.send(`/app/chat/${this.roomid}/addUser`,
       {},
-      JSON.stringify({sender: this.userid, type: 'JOIN'})
+      JSON.stringify({ sender: this.userid, type: 'JOIN' })
     );
 
   }
 
-  onError(error) {
-
+  loadHistory(lobbyName: string) {
+    this.service.getAllContentByLobby(lobbyName).subscribe(res => {
+      this.history = res;
+      // console.log(this.history);
+    });
   }
 
-  openGlobalSocket() {
-    this.stompClient.subscribe(`/channel/${this.roomid}`, (payload) => {
-      this.handleResult(payload);
-    });
+  loadUsers(lobbyName: string) {
+    this.service.getAllUsersByLobby(lobbyName).subscribe(res => {
+      this.users = res;
+      this.users.reverse();
+    })
+    setTimeout(() => {
+      this.loadUsers(this.roomid)
+    }, 10000);
   }
 
   handleResult(payload) {
 
     if (payload.body) {
-      console.log('message', payload);
+      // console.log('message', payload);
       const message = JSON.parse(payload.body);
 
       const callElement = this.renderer.createElement('div');
+      this.loadUsers(this.roomid);
 
       if (message.type === 'CHAT') {
 
@@ -108,7 +126,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           contentElement.innerHTML = message.content;
           const spanElement = this.renderer.createElement('span');
           this.renderer.addClass(spanElement, 'sent_msg_span');
-          spanElement.innerHTML = 'Send by me';
+          spanElement.innerHTML = this.formattime(message.messageTime) + ' Send by me';
 
           this.renderer.addClass(spanElement, 'callDetailOut');
           this.renderer.appendChild(sentElement, contentElement);
@@ -121,7 +139,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           const contentElement = this.renderer.createElement('p');
           contentElement.innerHTML = message.content;
           const spanElement = this.renderer.createElement('span');
-          spanElement.innerHTML = 'Send by ' + message.sender;
+          spanElement.innerHTML = this.formattime(message.messageTime) + ' Send by ' + message.sender;
           this.renderer.addClass(spanElement, 'callDetailIn');
 
           this.renderer.appendChild(receivedElement, contentElement);
@@ -130,14 +148,10 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
 
       } else if (message.type === 'JOIN') {
-        this.inboxPeople(payload);
-
-
         this.renderer.addClass(callElement, 'join_msg');
         const contentElement = this.renderer.createElement('p');
         contentElement.innerHTML = message.sender + ' joined!';
         this.renderer.appendChild(callElement, contentElement);
-
 
       } else if (message.type === 'LEAVE') {
         this.renderer.addClass(callElement, 'join_msg');
@@ -167,31 +181,12 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   }
 
-  inboxPeople(payload) {
-    const message = JSON.parse(payload.body);
-
-    const chatList = this.renderer.createElement('div');
-    this.renderer.addClass(chatList, 'chat_list');
-
-    const chatPeople = this.renderer.createElement('div');
-    this.renderer.addClass(chatPeople, 'chat_people');
-
-    const chatImg = this.renderer.createElement('div');
-    this.renderer.addClass(chatImg, 'chat_img');
-
-    const img = this.renderer.createElement('img');
-    this.renderer.setProperty(img, 'src', 'https://ptetutorials.com/images/user-profile.png');
-    this.renderer.setProperty(img, 'alt', 'sunil');
-
-    const chatIb = this.renderer.createElement('div');
-    this.renderer.addClass(chatIb, 'chat_ib');
-    chatIb.innerHTML = message.sender;
-
-    this.renderer.appendChild(chatImg, img);
-    this.renderer.appendChild(chatPeople, chatImg);
-    this.renderer.appendChild(chatPeople, chatIb);
-    this.renderer.appendChild(chatList, chatPeople);
-    this.renderer.appendChild(this.inboxChat.nativeElement, chatList);
+  formattime(timestamp: any): string {
+    timestamp = timestamp.split('T');
+    const date = timestamp[0];
+    const time = timestamp[1];
+    const timeFormat = time.split(':')[0] + ':' + time.split(':')[1];
+    return date + ' ' + timeFormat;
   }
 
 

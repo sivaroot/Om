@@ -1,8 +1,13 @@
 package com.backend.Om.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+//@Table(name = "lobbies")
 public class Lobby {
 
     @Id
@@ -10,15 +15,17 @@ public class Lobby {
     @Column(name = "lobby_id")
     private Long lobbyId;
     private String lobbyName;
+//
+//    @OneToMany(mappedBy = "lobby")
+//    private Set<UserLobby> userLobbies;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
 
-    @ManyToOne
-    @JoinColumn(name="content_id")
-    private Content content;
+    public Lobby() {
+    }
 
+    public Lobby(String lobbyName) {
+        this.lobbyName = lobbyName;
+    }
 
     public Long getLobbyId() {
         return lobbyId;
@@ -36,19 +43,5 @@ public class Lobby {
         this.lobbyName = lobbyName;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Content getContent() {
-        return content;
-    }
-
-    public void setContent(Content content) {
-        this.content = content;
-    }
 }

@@ -5,45 +5,73 @@
   </div>
 
 
-
   <div class="row main_center ">
 
     <div class="inbox_people bg-con main_border ">
       <div class="row heading_srch center ">
         <h5>Members</h5>
-        <input type="text" class="form-control main_border bg-con" placeholder="Search..." aria-describedby="basic-addon1">
+        <input type="text" class="form-control main_border bg-con" placeholder="Search..."
+          aria-describedby="basic-addon1">
       </div>
       <div #inboxChat class="inbox_chat">
-<!--        <div class="chat_list active_chat">
-          <div class="chat_people">
-            <div class="chat_img">
-              <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
-            <div class="chat_ib">
-              <h5>Sivaroot Chuncharoen</h5>
+        <div *ngFor="let user of users">
+          <div *ngIf="user.active == 1">
+            <div class="chat_list active_chat">
+              <div class="chat_people">
+                <div class="chat_img">
+                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                </div>
+                <div class="chat_ib">
+                  <h5>{{user.user.nickname}}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="user.active == false">
+            <div class="chat_list">
+              <div class="chat_people">
+                <div class="chat_img">
+                  <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                </div>
+                <div class="chat_ib">
+                  <h5>{{user.user.nickname}}</h5>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="chat_list">
-          <div class="chat_people">
-            <div class="chat_img">
-              <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
-            <div class="chat_ib">
-              <h5>Tony Stark</h5>
-            </div>
-          </div>
-        </div>-->
-      </div>
+       </div>
     </div>
 
     <div class="msg bg-con main_border">
       <div #msgArea class="msg_history">
-<!--        -->
+
+        <div *ngFor="let content of history">
+          <div *ngIf="content.user.nickname == userid">
+            <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>{{content.content}}</p>
+                <span class="sent_msg_span callDetailOut">{{formattime(content.messageTime)}} Send by me</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="content.user.nickname != userid">
+            <div class="incoming_msg">
+              <div class="received_msg">
+                <p>{{content.content}}</p>
+                <span class="callDetailIn">{{formattime(content.messageTime)}} Send by {{content.user.nickname}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
       <div class="type_msg ">
         <div class="input_msg_write">
-          <input type="text" id="messageInput" (keyup.enter)="sendMessage()" [(ngModel)]="messageInput"
-                 class="write_msg" placeholder="Type a message"/>
-          <button class="msg_send_btn" type="button" (click)="sendMessage()"></button>
+          <input name="hidden" type="text" id="messageInput" (keyup.enter)="sendMessage()" [(ngModel)]="messageInput"
+            class="form-control main_border" placeholder="Type a message" />
+          <button class="msg_send_btn form-control" type="button" (click)="sendMessage()"></button>
         </div>
       </div>
     </div>

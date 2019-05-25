@@ -4,6 +4,8 @@ import static java.lang.String.format;
 
 import com.backend.Om.model.ChatMessage;
 import com.backend.Om.model.ChatMessage.MessageType;
+import com.backend.Om.model.UserLobby;
+import com.backend.Om.repository.UserLobbyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class WebSocketEventListener {
   @Autowired
   private SimpMessageSendingOperations messagingTemplate;
 
+  @Autowired
+  private UserLobbyRepository userLobbyRepository;
   @EventListener
   public void handleWebSocketConnectListener(SessionConnectedEvent event) {
     logger.info("Received a new web socket connection.");
@@ -39,6 +43,9 @@ public class WebSocketEventListener {
       ChatMessage chatMessage = new ChatMessage();
       chatMessage.setType(MessageType.LEAVE);
       chatMessage.setSender(username);
+      UserLobby userLobby = userLobbyRepository.findUserLobbyByUser_NicknameAndLobby_LobbyName(username,roomId);
+      userLobby.setActive(false);
+      userLobbyRepository.save(userLobby);
 
       messagingTemplate.convertAndSend(format("/channel/%s", roomId), chatMessage);
     }

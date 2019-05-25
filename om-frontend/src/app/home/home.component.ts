@@ -1,11 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-
-import * as Stomp from 'stompjs';
-import * as SockJS from 'sockjs-client';
 import $ from 'jquery';
-
-import {CookieService} from 'ngx-cookie-service';
 
 const C_PATH_UNAME = 'om-uname';
 const C_PATH_ROOM = 'om-room';
@@ -35,6 +30,15 @@ export class HomeComponent implements OnInit {
       this.chat(this.roomId, this.username);
     }
   }
+
+  join() {
+    this.username = $('#nameJoin').val();
+    this.roomId = $('#roomID').val();
+    if (this.username && this.roomId) {
+      this.chat(this.roomId, this.username);
+    }
+  }
+
 
   chat(roomId: string, uname: string) {
     this.router.navigate(['/chat', {roomid: roomId, userid: uname}]);
